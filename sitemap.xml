@@ -2,9 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://palmxin.github.io/post/vpp/</loc>
+  </url><url>
     <loc>https://palmxin.github.io/categories/</loc>
   </url><url>
     <loc>https://palmxin.github.io/</loc>
+  </url><url>
+    <loc>https://palmxin.github.io/tags/network/</loc>
+  </url><url>
+    <loc>https://palmxin.github.io/categories/network/</loc>
+  </url><url>
+    <loc>https://palmxin.github.io/post/</loc>
+  </url><url>
+    <loc>https://palmxin.github.io/tags/sdn/</loc>
+  </url><url>
+    <loc>https://palmxin.github.io/categories/sdn/</loc>
   </url><url>
     <loc>https://palmxin.github.io/tags/</loc>
   </url>
