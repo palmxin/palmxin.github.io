@@ -1,58 +1,77 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
-<head>
-  <link href="https://gmpg.org/xfn/11" rel="profile">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="generator" content="Hugo 0.119.0">
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+    <title>Vpp // PALMXIN&#39;S BLOG</title>
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.119.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="palmxin" />
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/main.min.3c3c186cd62e563ad6e2f00a89dbee656ab912d1d46f856b5605dd0232521e2a.css" />
 
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Vpp"/>
+<meta name="twitter:description" content="1. VPP语句学习 1.1. NAT44: set int state GigabitEthernetb/0/0 up set int state GigabitEthernet3/0/0 up set interface ip address GigabitEthernet3/0/0 192.168.0.12/24 set interface ip address GigabitEthernetb/0/0 192.168.219.2/24 nat44 plugin enable ip route add 0.0.0.0/0 via 192.168.0.1 1.2. SNAT： nat44 add interface address GigabitEthernet3/0/0 或 nat44 add address 192.168.0.12 set int nat44 in GigabitEthernetb/0/0 out GigabitEthernet3/0/0 1.3. 一对一映射： 打开nat44 forwarding enable后，做一对一
+nat44 add address 192.168.0.12 nat44 add static mapping local 192.168.219.128 external 192."/>
 
-  <title> &middot; PALMXIN&#39;S BLOG</title>
-  <meta name="description" content="" />
-
-  
-  <link type="text/css" rel="stylesheet" href="https://palmxin.github.io/css/print.css" media="print">
-  <link type="text/css" rel="stylesheet" href="https://palmxin.github.io/css/poole.css">
-  <link type="text/css" rel="stylesheet" href="https://palmxin.github.io/css/syntax.css">
-  <link type="text/css" rel="stylesheet" href="https://palmxin.github.io/css/hyde.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+    <meta property="og:title" content="Vpp" />
+<meta property="og:description" content="1. VPP语句学习 1.1. NAT44: set int state GigabitEthernetb/0/0 up set int state GigabitEthernet3/0/0 up set interface ip address GigabitEthernet3/0/0 192.168.0.12/24 set interface ip address GigabitEthernetb/0/0 192.168.219.2/24 nat44 plugin enable ip route add 0.0.0.0/0 via 192.168.0.1 1.2. SNAT： nat44 add interface address GigabitEthernet3/0/0 或 nat44 add address 192.168.0.12 set int nat44 in GigabitEthernetb/0/0 out GigabitEthernet3/0/0 1.3. 一对一映射： 打开nat44 forwarding enable后，做一对一
+nat44 add address 192.168.0.12 nat44 add static mapping local 192.168.219.128 external 192." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://palmxin.github.io/post/vpp/" /><meta property="article:section" content="post" />
+<meta property="article:published_time" content="2023-10-05T19:44:29+08:00" />
+<meta property="article:modified_time" content="2023-10-05T19:44:29+08:00" />
 
 
-  
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
-  <link rel="shortcut icon" href="/favicon.png">
-
-  
-  
-</head>
-
-  <body class="theme-base-0c layout-reverse">
-  <aside class="sidebar">
-  <div class="container sidebar-sticky">
-    <div class="sidebar-about">
-      <a href="https://palmxin.github.io/"><h1>PALMXIN&#39;S BLOG</h1></a>
-      <p class="lead">
-       Palmxin&#39;s Blog 
-      </p>
-    </div>
-
-    <nav>
-      <ul class="sidebar-nav">
-        <li><a href="https://palmxin.github.io/">Home</a> </li>
-        <li><a href="/post/vpp/">  </a></li><li><a href="https://github.com/"> Github </a></li><li><a href="https://openwrt.org/"> openwrt </a></li>
-      </ul>
-    </nav>
-
-    <p>&copy; 2023. All rights reserved. </p>
-  </div>
-</aside>
-
-    <main class="content container">
-    <div class="post">
-  <h1></h1>
-  <time datetime=0001-01-01T00:00:00Z class="post-date">Mon, Jan 1, 0001</time>
-  <h1 id="1-vpp语句学习">1. VPP语句学习</h1>
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="https://palmxin.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="palmxin" /></a>
+      <span class="app-header-title">PALMXIN&#39;S BLOG</span>
+      <nav class="app-header-menu">
+          <a class="app-header-menu-item" href="/">Home</a>
+             - 
+          
+          <a class="app-header-menu-item" href="/post/">post</a>
+      </nav>
+      <p>-</p>
+      <div class="app-header-social">
+        
+          <a href="https://github.com/palmxin" target="_blank" rel="noreferrer noopener me">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <title>My Github</title>
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg>
+          </a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Vpp</h1>
+      <div class="post-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <title>calendar</title>
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Oct 5, 2023
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <title>clock</title>
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          1 min read
+        </div>
+      </div>
+    </header>
+    <div class="post-content">
+      <h1 id="1-vpp语句学习">1. VPP语句学习</h1>
 <h2 id="11-nat44">1.1. NAT44:</h2>
 <pre tabindex="0"><code>set int state GigabitEthernetb/0/0 up
 set int state GigabitEthernet3/0/0 up
@@ -88,13 +107,12 @@ set interface mtu    1500 GigabitEthernet3/0/0</p>
 <p>vppctl show memory main-heap verbose</p>
 <p>查看线程CPU占用: ps H -eo user,pid,ppid,tid,time,%cpu,cmd &ndash;sort=%cpu</p>
 
-</div>
-
+    </div>
+    <div class="post-footer">
+      
+    </div>
+  </article>
 
     </main>
-
-    
-      
-    
   </body>
 </html>
