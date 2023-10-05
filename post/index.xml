@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on PALMXIN&#39;S BLOG</title>
+    <link>https://palmxin.github.io/post/</link>
+    <description>Recent content in Posts on PALMXIN&#39;S BLOG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 02 Oct 2023 18:10:14 +0800</lastBuildDate><atom:link href="https://palmxin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mysql_recovery</title>
+      <link>https://palmxin.github.io/post/mysql_recovery/</link>
+      <pubDate>Mon, 02 Oct 2023 18:10:14 +0800</pubDate>
+      
+      <guid>https://palmxin.github.io/post/mysql_recovery/</guid>
+      <description>Mariadb,Mysql根据.frm和.ibd文件来恢复数据和表结构，大体分为三个步骤： 1. 创建表结构 2. 导入表结构 3. 恢复表数据 例子： - 1.1进入数据库中，创建表结构，需要注意的是表名需要和恢复的表名相同，字段不需要相同（如果记得表结构，可一次性创建成功直接进入第三步），输入命令: `&amp;gt;create table techarticlevisitstatistics(id int);` - 1.2创建成功之后，断开mysql服务，打开表所在的文件夹，一般都会在\MariaDB\data\数据库名，将需要恢复的表结构.frm文件替换掉刚才创建的表结构，然后设置my.ini文件，添加语句 `innodb_force_recovery = 6` 表示现在需要恢复表数据，表结构为唯读，连接mysql服务，进入数据库，输入命令&amp;quot;desc techarticlevisitstatistics&amp;quot;,如果出现错误类似于&amp;quot;Table &#39;personalsite.techarticlevisitstatistics&#39; doesn&#39;t exist in engine&amp;quot; `desc techarticlevisitstatistics` - 1.3接下来打开日志文件查看日志，我们可以看到如下所示的错误信息：&amp;quot;Table personalsite/techarticlevisitstatistics contains 1 user defined columns in InnoDB, but 3 columns in MariaDB...&amp;quot;，我们可以看到源表结构有三列，但是我们创建的表结构只有一列，那怎么办，此时我们需要删除已经创建的表，需要注意的是需要将my.ini文件中的&amp;quot;innodb_force_recovery = 6&amp;quot;注释掉，否则会提示表示唯读，并且重启mysql服务，然后重复之前1.1,1.2的动作，此时表需要创建为3列，如下图所示： - 1.4以上动作完成之后，我们输入&amp;quot;desc techarticlevisitstatistics;&amp;quot;我们可以看到替换成功的表结构，很完美第一步我们已经完成了。 - 2.1此时我们需要导出表结构，可以使用navicat或者mysql workbench等导出表结构，目前我是用mysqldump命令来导出表结构，打开cmd，输入命令&amp;quot;mysqldump -uroot -p123456 -d personalsite techarticlevisitstatistics&amp;gt;\root\techarticlereview.sql&amp;quot;,导出成功之后我们可以在目录下看到sql文件，打开sql文件，复制创建表结构的语句，如下图所示： - 2.2删除已经创建的表结构，执行刚才复制的创建表语句，我们可以得到一个新的表结构，到了这一步我们已经完成70%，接下来我们就需要恢复数据了。 - 3执行 alter table techarticlevisitstatistics discard tablespace ,执行完之后，数据库目录下的techarticlevisitstatistics.ibd文件就会消失，然后我们把需要恢复的.ibd文件复制过来，执行 alter table techarticlevisitstatistics import tablespace，此时我们的数据就完全恢复成功了。 </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://palmxin.github.io/post/vpp/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://palmxin.github.io/post/vpp/</guid>
+      <description>1. VPP语句学习 1.1. NAT44: set int state GigabitEthernetb/0/0 up set int state GigabitEthernet3/0/0 up set interface ip address GigabitEthernet3/0/0 192.168.0.12/24 set interface ip address GigabitEthernetb/0/0 192.168.219.2/24 nat44 plugin enable ip route add 0.0.0.0/0 via 192.168.0.1 1.2. SNAT： nat44 add interface address GigabitEthernet3/0/0 或 nat44 add address 192.168.0.12 set int nat44 in GigabitEthernetb/0/0 out GigabitEthernet3/0/0 1.3. 一对一映射： 打开nat44 forwarding enable后，做一对一
+nat44 add address 192.168.0.12 nat44 add static mapping local 192.168.219.128 external 192.</description>
+    </item>
+    
+  </channel>
+</rss>

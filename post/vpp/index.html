@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.119.0">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title> &middot; PALMXIN&#39;S BLOG</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://palmxin.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://palmxin.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://palmxin.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://palmxin.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class="theme-base-0c layout-reverse">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://palmxin.github.io/"><h1>PALMXIN&#39;S BLOG</h1></a>
+      <p class="lead">
+       Palmxin&#39;s Blog 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://palmxin.github.io/">Home</a> </li>
+        <li><a href="/post/vpp/">  </a></li><li><a href="https://github.com/"> Github </a></li><li><a href="https://openwrt.org/"> openwrt </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2023. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1></h1>
+  <time datetime=0001-01-01T00:00:00Z class="post-date">Mon, Jan 1, 0001</time>
+  <h1 id="1-vpp语句学习">1. VPP语句学习</h1>
+<h2 id="11-nat44">1.1. NAT44:</h2>
+<pre tabindex="0"><code>set int state GigabitEthernetb/0/0 up
+set int state GigabitEthernet3/0/0 up
+set interface ip address  GigabitEthernet3/0/0 192.168.0.12/24
+set interface ip address  GigabitEthernetb/0/0 192.168.219.2/24
+nat44 plugin enable
+ip route add 0.0.0.0/0 via 192.168.0.1
+</code></pre><h2 id="12-snat">1.2. SNAT：</h2>
+<pre tabindex="0"><code>nat44 add interface address GigabitEthernet3/0/0 或   nat44 add address 192.168.0.12 
+set int nat44 in GigabitEthernetb/0/0 out GigabitEthernet3/0/0
+</code></pre><h2 id="13-一对一映射">1.3. 一对一映射：</h2>
+<p>打开nat44 forwarding enable后，做一对一</p>
+<pre tabindex="0"><code> nat44 add address 192.168.0.12
+ nat44 add static mapping local 192.168.219.128 external 192.168.0.12
+ nat44 add static mapping local 192.168.219.128 external 192.168.0.12 del //删除  
+</code></pre><p>查看
+show nat44 static mappings</p>
+<h2 id="14-端口映射">1.4. 端口映射：</h2>
+<p>nat44 add static mapping tcp local 192.168.219.128 22 external  192.168.0.12 8099</p>
+<h2 id="15-vrrp">1.5. VRRP</h2>
+<p>Vpp1:</p>
+<pre tabindex="0"><code>vrrp vr add GigabitEthernetb/0/0 vr_id 1 priority 200  accept_mode 192.168.219.50
+vrrp proto start GigabitEthernetb/0/0 vr_id 1
+set interface promiscuous on GigabitEthernetb/0/0
+</code></pre><p>Vpp2:</p>
+<pre tabindex="0"><code>vrrp vr add GigabitEthernetb/0/0 vr_id 1 priority 100 no_preempt accept_mode 192.168.219.50
+vrrp proto start GigabitEthernetb/0/0 vr_id 1
+set interface promiscuous on GigabitEthernetb/0/0
+</code></pre><p>Vmware workstattion  :  ethernet%d.noPromisc = &ldquo;FALSE&rdquo;</p>
+<h2 id="16-杂项">1.6. 杂项：</h2>
+<p>set interface mtu    1500  GigabitEthernetb/0/0
+set interface mtu    1500 GigabitEthernet3/0/0</p>
+<p>vppctl show memory main-heap verbose</p>
+<p>查看线程CPU占用: ps H -eo user,pid,ppid,tid,time,%cpu,cmd &ndash;sort=%cpu</p>
+
+</div>
+
+
+    </main>
+
+    
+      
+    
+  </body>
+</html>

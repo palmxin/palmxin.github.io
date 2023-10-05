@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" lang="zh-cn">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.119.0">
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>PALMXIN&#39;S BLOG</title>
+  <meta name="description" content="Palmxin&#39;s Blog" />
+
+  
+  <link type="text/css" rel="stylesheet" href="https://palmxin.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="https://palmxin.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="https://palmxin.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="https://palmxin.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  <link href="https://palmxin.github.io/index.xml" rel="alternate" type="application/rss+xml" title="PALMXIN'S BLOG" />
+  
+</head>
+
+  <body class="theme-base-0c layout-reverse">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="https://palmxin.github.io/"><h1>PALMXIN&#39;S BLOG</h1></a>
+      <p class="lead">
+       Palmxin&#39;s Blog 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="https://palmxin.github.io/">Home</a> </li>
+        <li><a href="/post/vpp/">  </a></li><li><a href="https://github.com/"> Github </a></li><li><a href="https://openwrt.org/"> openwrt </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2023. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="posts">
+<article class="post">
+  <h1 class="post-title">
+    <a href="https://palmxin.github.io/post/mysql_recovery/">Mysql_recovery</a>
+  </h1>
+  <time datetime="2023-10-02T18:10:14&#43;0800" class="post-date">Mon, Oct 2, 2023</time>
+  Mariadb,Mysql根据.frm和.ibd文件来恢复数据和表结构，大体分为三个步骤： 1. 创建表结构 2. 导入表结构 3. 恢复表数据 例子： - 1.1进入数据库中，创建表结构，需要注意的是表名需要和恢复的表名相同，字段不需要相同（如果记得表结构，可一次性创建成功直接进入第三步），输入命令: `&gt;create table techarticlevisitstatistics(id int);` - 1.2创建成功之后，断开mysql服务，打开表所在的文件夹，一般都会在\MariaDB\data\数据库名，将需要恢复的表结构.frm文件替换掉刚才创建的表结构，然后设置my.ini文件，添加语句 `innodb_force_recovery = 6` 表示现在需要恢复表数据，表结构为唯读，连接mysql服务，进入数据库，输入命令&quot;desc techarticlevisitstatistics&quot;,如果出现错误类似于&quot;Table 'personalsite.techarticlevisitstatistics' doesn't exist in engine&quot; `desc techarticlevisitstatistics` - 1.3接下来打开日志文件查看日志，我们可以看到如下所示的错误信息：&quot;Table personalsite/techarticlevisitstatistics contains 1 user defined columns in InnoDB, but 3 columns in MariaDB...&quot;，我们可以看到源表结构有三列，但是我们创建的表结构只有一列，那怎么办，此时我们需要删除已经创建的表，需要注意的是需要将my.ini文件中的&quot;innodb_force_recovery = 6&quot;注释掉，否则会提示表示唯读，并且重启mysql服务，然后重复之前1.1,1.2的动作，此时表需要创建为3列，如下图所示： - 1.4以上动作完成之后，我们输入&quot;desc techarticlevisitstatistics;&quot;我们可以看到替换成功的表结构，很完美第一步我们已经完成了。 - 2.1此时我们需要导出表结构，可以使用navicat或者mysql workbench等导出表结构，目前我是用mysqldump命令来导出表结构，打开cmd，输入命令&quot;mysqldump -uroot -p123456 -d personalsite techarticlevisitstatistics&gt;\root\techarticlereview.sql&quot;,导出成功之后我们可以在目录下看到sql文件，打开sql文件，复制创建表结构的语句，如下图所示： - 2.2删除已经创建的表结构，执行刚才复制的创建表语句，我们可以得到一个新的表结构，到了这一步我们已经完成70%，接下来我们就需要恢复数据了。 - 3执行 alter table techarticlevisitstatistics discard tablespace ,执行完之后，数据库目录下的techarticlevisitstatistics.ibd文件就会消失，然后我们把需要恢复的.ibd文件复制过来，执行 alter table techarticlevisitstatistics import tablespace，此时我们的数据就完全恢复成功了。 
+  
+</article><article class="post">
+  <h1 class="post-title">
+    <a href="https://palmxin.github.io/about/">About</a>
+  </h1>
+  <time datetime="2023-10-02T18:08:17&#43;0800" class="post-date">Mon, Oct 2, 2023</time>
+  palmxin@gmail.com
+  
+</article><article class="post">
+  <h1 class="post-title">
+    <a href="https://palmxin.github.io/post/vpp/"></a>
+  </h1>
+  <time datetime="0001-01-01T00:00:00Z" class="post-date">Mon, Jan 1, 0001</time>
+  1. VPP语句学习 1.1. NAT44: set int state GigabitEthernetb/0/0 up set int state GigabitEthernet3/0/0 up set interface ip address GigabitEthernet3/0/0 192.168.0.12/24 set interface ip address GigabitEthernetb/0/0 192.168.219.2/24 nat44 plugin enable ip route add 0.0.0.0/0 via 192.168.0.1 1.2. SNAT： nat44 add interface address GigabitEthernet3/0/0 或 nat44 add address 192.168.0.12 set int nat44 in GigabitEthernetb/0/0 out GigabitEthernet3/0/0 1.3. 一对一映射： 打开nat44 forwarding enable后，做一对一
+nat44 add address 192.168.0.12 nat44 add static mapping local 192.168.219.128 external 192.
+  
+  <div class="read-more-link">
+    <a href="/post/vpp/">Read More…</a>
+  </div>
+  
+</article>
+</div>
+    </main>
+
+    
+      
+    
+  </body>
+</html>
